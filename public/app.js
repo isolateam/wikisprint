@@ -10,7 +10,7 @@ let token = store.get('rh_token');
 if (!token) { token = (crypto.randomUUID?.() || Math.random().toString(36).slice(2) + Date.now().toString(36)); store.set('rh_token', token); }
 let myName = store.get('rh_name') || 'Player ' + Math.floor(1000 + Math.random() * 9000);
 
-let ws, me = null, lobby = null, skew = 0;
+let me = null, lobby = null, skew = 0;
 let daily = null;        // latest /api/daily state
 let inDaily = false;     // is the player currently in the daily flow?
 let game = null;         // the round on screen: {mode, key, target, start, studyEndsAt, raceEndsAt, date}
@@ -64,24 +64,60 @@ $('#brandLink').addEventListener('click', e => {
   goHome();
 });
 
-// ---------------- socket (party mode) ----------------
-function connect() {
-  ws = new WebSocket((location.protocol === 'https:' ? 'wss://' : 'ws://') + location.host);
-  ws.onopen = () => {
-    send({ t: 'hello', token, name: myName });
-    const code = new URLSearchParams(location.search).get('code');
-    if (code) send({ t: 'join', code });
-  };
-  ws.onmessage = e => {
-    const m = JSON.parse(e.data);
-    if (m.t === 'me') { me = m.me; renderMe(); }
-    else if (m.t === 'lobby') { skew = m.lobby.now - Date.now(); lobby = m.lobby; onLobby(); }
-    else if (m.t === 'left') { lobby = null; $('#tbExpedition').textContent = '—'; setUrlCode(null); renderMe(); goHome(); }
-    else if (m.t === 'error') { $('#homeErr').textContent = m.msg; if (!lobby) setUrlCode(null); toast(m.msg); }
-  };
-  ws.onclose = () => { if (lobby) toast('Connection lost, reconnecting…'); setTimeout(connect, 1500); };
+// ---------------- party mode (HTTP polling) ----------------
+// The host may be serverless, so rooms are kept up to date by asking the server about once a second.
+let room = null;         // code of the room we're in
+let pollTimer = null;
+let pollSeq = 0;         // ignore poll answers that arrive after a newer action's answer
+
+async function send(o) {
+  const { t, ...rest } = o;
+  try {
+    if (t === 'rename') { me = await api('/api/me', { name: myName }); renderMe(); return; }
+    if ((t !== 'create' && t !== 'join') && !room) return;
+    const seq = ++pollSeq;
+    const st = await api('/api/party/' + t, { ...rest, code: t === 'join' ? rest.code : room });
+    if (st.left) { leftRoom(); return; }
+    if (seq === pollSeq) onPartyState(st);
+  } catch (e) {
+    if (e.status === 404 && room) { leftRoom(e.message); return; }
+    $('#homeErr').textContent = e.message; toast(e.message);
+    if (t === 'join') setUrlCode(null);
+  }
 }
-const send = o => ws && ws.readyState === 1 && ws.send(JSON.stringify(o));
+function onPartyState(st) {
+  if (!st.lobby) return;
+  room = st.lobby.code;
+  skew = st.lobby.now - Date.now();
+  lobby = st.lobby;
+  onLobby();
+  if (!pollTimer) schedulePoll();
+}
+function schedulePoll() {
+  clearTimeout(pollTimer);
+  const fast = lobby && (lobby.phase === 'study' || lobby.phase === 'race' || lobby.phase === 'loading');
+  pollTimer = setTimeout(async () => {
+    if (!room) { pollTimer = null; return; }
+    const seq = ++pollSeq;
+    try {
+      const st = await api('/api/party/state', { code: room });
+      if (seq === pollSeq && room) onPartyState(st);
+    } catch (e) {
+      if (e.status === 404) { leftRoom(e.message); return; }
+    }
+    if (room) schedulePoll(); else pollTimer = null;
+  }, fast ? 800 : 1500);
+}
+function leftRoom(msg) {
+  room = null; lobby = null;
+  clearTimeout(pollTimer); pollTimer = null;
+  $('#tbExpedition').textContent = '—';
+  setUrlCode(null); renderMe(); goHome();
+  if (msg) toast(msg);
+}
+async function loadMe() {
+  try { me = await api('/api/me', { name: store.get('rh_name') ? myName : undefined }); renderMe(); } catch {}
+}
 
 // ---------------- home: party controls ----------------
 $('#nameInput').value = myName;
@@ -114,8 +150,8 @@ async function loadLeaderboard() {
 async function api(path, body) {
   const opts = body ? { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ token, name: myName, ...body }) } : undefined;
   const r = await fetch(path, opts);
-  const j = await r.json();
-  if (!r.ok) throw new Error(j.error || 'Request failed');
+  const j = await r.json().catch(() => ({}));
+  if (!r.ok) { const e = new Error(j.error || 'Request failed'); e.status = r.status; throw e; }
   return j;
 }
 async function loadDaily() {
@@ -129,7 +165,11 @@ function applyDaily(st) {
   renderDailyHome();
   if (!inDaily) return;
   const a = st.attempt;
-  if (!a) return;
+  if (!a) {
+    // the server has no record of the run we're playing: say so instead of hanging
+    if (game?.mode === 'daily') { goHome(); toast('The server lost track of your run. Please start again.'); }
+    return;
+  }
   const base = { mode: 'daily', key: 'd' + st.date, target: st.target, start: st.start, studyEndsAt: a.studyEndsAt, date: st.date };
   if (a.status === 'study') enterStudy(base);
   else if (a.status === 'race') enterRace(base, a.path);
@@ -479,4 +519,5 @@ show('home');
 loadDaily();
 loadLeaderboard();
 renderMe();
-connect();
+loadMe();
+{ const code = new URLSearchParams(location.search).get("code"); if (code) send({ t: "join", code }); }
