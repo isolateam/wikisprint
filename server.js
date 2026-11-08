@@ -151,11 +151,21 @@ const dayNo = d => Math.round((Date.parse(d) - EPOCH) / 864e5) + 1;
 const nextReset = () => { const n = new Date(); return Date.UTC(n.getUTCFullYear(), n.getUTCMonth(), n.getUTCDate() + 1); };
 // Score: start at 1000, lose 30 per click and 1 per 2 seconds. Finishing is always worth at least 50.
 const sprintScore = (clicks, ms) => Math.max(50, Math.round(1000 - 30 * clicks - ms / 2000));
-const attKey = d => 'd:att:' + d;
+// Runs are stored per day *and* article pair, so if a day's articles are changed
+// after people have played, everyone gets a fresh attempt on the new pair.
+const attKey = (d, day) => `d:att:${d}:${day.start}>${day.target}`;
+
+// Hand-picked days: the "days" section of data/daily.json, e.g.
+//   {"days": {"2026-11-09": {"start": "Frutiger Aero", "target": "Yam (vegetable)"}}}
+// A day listed there always wins over a randomly picked one.
+let PINNED = {};
+try { PINNED = require('./data/daily.json').days || {}; } catch {} // require() so Vercel bundles the file
 
 const dayCache = {};
 async function getDay(d) {
   if (dayCache[d]) return dayCache[d];
+  const pin = PINNED[d];
+  if (pin && pin.start && pin.target) return (dayCache[d] = { n: dayNo(d), start: pin.start, target: pin.target });
   let day = J(await redis('GET', 'd:day:' + d));
   if (!day) {
     // several instances may race here: the first SET wins and everyone reads that one back
@@ -205,8 +215,8 @@ function report(d, token, day, all) {
   };
 }
 
-async function loadAttempts(d) {
-  const raw = hobj(await redis('HGETALL', attKey(d)));
+async function loadAttempts(d, day) {
+  const raw = hobj(await redis('HGETALL', attKey(d, day)));
   const all = {};
   for (const [t, v] of Object.entries(raw)) { const a = J(v); if (a) all[t] = a; }
   return all;
@@ -214,9 +224,9 @@ async function loadAttempts(d) {
 
 async function dailyState(token, d, day, all) {
   const now = Date.now();
-  all = all || await loadAttempts(d);
+  all = all || await loadAttempts(d, day);
   const a = all[token];
-  if (a && promote(a, day, now)) await redis('HSET', attKey(d), token, JSON.stringify(a));
+  if (a && promote(a, day, now)) await redis('HSET', attKey(d, day), token, JSON.stringify(a));
   const st = token ? J(await redis('HGET', 'd:stats', token)) : null;
   const today = todayKey();
   const top = Object.entries(all)
@@ -256,16 +266,16 @@ async function handleDaily(route, b, token) {
     const now = Date.now();
     const fresh = { name: prof.name, beganAt: now, studyEndsAt: now + STUDY_MS, status: 'study', path: [] };
     // HSETNX makes "one attempt per day" hold even if begin is sent twice at once
-    const created = await redis('HSETNX', attKey(d), token, JSON.stringify(fresh));
+    const created = await redis('HSETNX', attKey(d, day), token, JSON.stringify(fresh));
     if (created) {
       const st = J(await redis('HGET', 'd:stats', token)) || freshStats();
       st.played++;
-      await pipeline([['HSET', 'd:stats', token, JSON.stringify(st)], ['EXPIRE', attKey(d), DAY_TTL]]);
+      await pipeline([['HSET', 'd:stats', token, JSON.stringify(st)], ['EXPIRE', attKey(d, day), DAY_TTL]]);
     }
     return dailyState(token, d, day);
   }
 
-  const a = J(await redis('HGET', attKey(d), token));
+  const a = J(await redis('HGET', attKey(d, day), token));
   if (!a) throw new HttpError(400, 'You have not started this sprint.');
   const now = Date.now();
   let changed = promote(a, day, now);
@@ -291,7 +301,7 @@ async function handleDaily(route, b, token) {
     giveUp(a, now);
     changed = true;
   }
-  if (changed) await redis('HSET', attKey(d), token, JSON.stringify(a));
+  if (changed) await redis('HSET', attKey(d, day), token, JSON.stringify(a));
   return dailyState(token, d, day);
 }
 
