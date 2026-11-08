@@ -1,0 +1,259 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Wikisprint</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,700;1,9..144,600;1,9..144,700&family=Figtree:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><rect width='16' height='16' rx='3' fill='%230b0d14'/><path d='M3 4h2l1 6 2-6h1l2 6 1-6h2l-2 9h-2L9 8l-2 5H5z' fill='%233ee6f2'/></svg>">
+</head>
+<body>
+
+<header class="topbar">
+  <a class="brand" href="/" id="brandLink">Wiki<span>sprint</span></a>
+  <dl class="tb-cells">
+    <div class="tb-cell hidden" id="tbRoom"><dt>Room</dt><dd id="tbExpedition">—</dd></div>
+    <div class="tb-cell" id="tbMe"><dt>Player</dt><dd id="tbName">…</dd></div>
+    <div class="tb-cell"><dt>Streak</dt><dd id="tbStreak">0</dd></div>
+    <div class="tb-cell tb-elo"><dt>Party Elo</dt><dd id="tbElo">—</dd></div>
+  </dl>
+</header>
+
+<main id="app">
+
+  <!-- HOME -->
+  <section id="scr-home" class="screen">
+    <div class="hero">
+      <div class="hero-copy">
+        <h1 class="logo">Wiki<span>sprint</span></h1>
+        <p class="tagline">One Wikipedia article a day. Study it for 20 seconds, get dropped somewhere else, and find your way back using nothing but links.</p>
+      </div>
+      <svg class="linkmap" viewBox="0 0 440 300" aria-hidden="true">
+        <g class="edges">
+          <path d="M70 60 C 140 40, 170 120, 220 110"/><path d="M70 60 C 90 140, 60 190, 90 230"/>
+          <path d="M220 110 C 260 60, 320 60, 360 70"/><path d="M90 230 C 160 250, 200 240, 250 210"/>
+          <path d="M360 70 C 400 120, 380 170, 370 200"/><path d="M220 110 C 230 160, 240 180, 250 210"/>
+          <path d="M250 210 C 300 260, 340 250, 370 200"/>
+        </g>
+        <path class="route" d="M70 60 C 140 40, 170 120, 220 110 C 230 160, 240 180, 250 210 C 300 260, 340 250, 370 200"/>
+        <g class="nodes">
+          <g transform="translate(70 60)"><rect x="-44" y="-15" width="88" height="30" rx="15"/><text>Jazz</text></g>
+          <g transform="translate(220 110)"><rect x="-56" y="-15" width="112" height="30" rx="15"/><text>New Orleans</text></g>
+          <g transform="translate(360 70)"><rect x="-44" y="-15" width="88" height="30" rx="15"/><text>Ferry</text></g>
+          <g transform="translate(90 230)"><rect x="-50" y="-15" width="100" height="30" rx="15"/><text>Saxophone</text></g>
+          <g transform="translate(250 210)"><rect x="-58" y="-15" width="116" height="30" rx="15"/><text>Mississippi</text></g>
+          <g class="goal" transform="translate(370 200)"><rect x="-52" y="-17" width="104" height="34" rx="17"/><text>Mark Twain</text></g>
+        </g>
+        <g class="start-dot" transform="translate(70 60)"><circle r="5" cx="-54" cy="0"/></g>
+      </svg>
+    </div>
+
+    <div class="daily-grid">
+      <div class="bib" id="dailyCard">
+        <i class="pin tl"></i><i class="pin tr"></i><i class="pin bl"></i><i class="pin br"></i>
+        <div class="bib-strip"><span>Daily sprint</span><span id="dailyDate">Today</span></div>
+        <div class="bib-main">
+          <div class="bib-num"><small>No.</small><span id="dailyNum">–</span></div>
+          <div class="bib-count" id="dailyPlayers"></div>
+        </div>
+        <div class="bib-body" id="dailyBody"><p class="muted">Loading today's sprint…</p></div>
+      </div>
+
+      <div class="card">
+        <h2 class="card-title">Today's best</h2>
+        <ol class="leaderboard" id="dailyTop"><li class="muted">Loading…</li></ol>
+      </div>
+    </div>
+
+    <ol class="howto">
+      <li><b>1</b><span>You get 20 seconds to read today's target article.</span></li>
+      <li><b>2</b><span>You're dropped on a different article, the same one for everyone.</span></li>
+      <li><b>3</b><span>Click links to reach the target. No search, no typing URLs.</span></li>
+      <li><b>4</b><span>See how your clicks and time compare with everyone else.</span></li>
+    </ol>
+
+    <h2 class="section-title">Play with friends</h2>
+    <div class="home-grid">
+      <div class="card">
+        <label class="field">
+          <span>Your name, shown on leaderboards</span>
+          <input id="nameInput" maxlength="20" placeholder="Your name" autocomplete="off">
+        </label>
+        <p class="hint">Party races use random articles. Everyone in the room races at once, and the first to arrive wins Elo.</p>
+        <div class="party-actions">
+          <button class="btn" id="createBtn">Create a room</button>
+          <div class="join-row">
+            <input id="codeInput" maxlength="4" placeholder="Code" autocomplete="off" spellcheck="false" aria-label="Room code">
+            <button class="btn" id="joinBtn">Join</button>
+          </div>
+        </div>
+        <div class="err" id="homeErr"></div>
+      </div>
+
+      <div class="card">
+        <h2 class="card-title">Party Elo</h2>
+        <ol class="leaderboard" id="leaderboard"><li class="muted">Loading…</li></ol>
+      </div>
+    </div>
+  </section>
+
+  <!-- LOBBY -->
+  <section id="scr-lobby" class="screen">
+    <div class="lobby-head">
+      <div>
+        <div class="label">Room code</div>
+        <div class="code" id="lobbyCode">----</div>
+      </div>
+      <div class="lobby-actions">
+        <button class="btn" id="copyBtn">Copy invite link</button>
+        <button class="btn btn-quiet" id="leaveBtn">Leave</button>
+      </div>
+    </div>
+
+    <div class="lobby-grid">
+      <div class="card">
+        <h2 class="card-title">Players <span class="count" id="crewCount">0</span></h2>
+        <ul class="manifest" id="manifest"></ul>
+      </div>
+      <div class="card">
+        <h2 class="card-title">Settings</h2>
+        <div class="setting"><span>Study time</span><b>20 seconds</b></div>
+        <div class="setting">
+          <span>Time limit</span>
+          <div class="seg" id="raceSeg">
+            <button data-m="3">3m</button><button data-m="5">5m</button><button data-m="10">10m</button><button data-m="15">15m</button>
+          </div>
+        </div>
+        <div class="setting"><span>Winning</span><b>First to the target</b></div>
+        <div class="err" id="lobbyErr"></div>
+        <button class="btn btn-primary btn-big" id="startBtn">Start race</button>
+        <div class="muted center" id="waitHost">Waiting for the host to start.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- LOADING -->
+  <section id="scr-loading" class="screen center-screen">
+    <div class="loading">
+      <div class="bar"><i></i></div>
+      <div>Picking articles…</div>
+    </div>
+  </section>
+
+  <!-- STUDY (shared) -->
+  <section id="scr-study" class="screen">
+    <div class="study-head">
+      <div class="study-banner">
+        <div>
+          <div class="label">Your target</div>
+          <div class="target-title" id="studyTitle">…</div>
+        </div>
+        <div class="countdown"><span id="studyClock">20</span><small>seconds</small></div>
+      </div>
+      <div class="study-bar"><div id="studyFill"></div></div>
+    </div>
+    <article class="paper study" id="studyArticle"></article>
+  </section>
+
+  <!-- RACE (shared) -->
+  <section id="scr-race" class="screen">
+    <div class="race-bar">
+      <div class="rb-target"><span class="label">Target</span><b id="raceTarget">…</b></div>
+      <div class="rb-stat"><span class="label">Clicks</span><b id="raceClicks">0</b></div>
+      <div class="rb-stat"><span class="label" id="raceClockLabel">Time left</span><b id="raceClock">--:--</b></div>
+      <div class="rb-btns">
+        <button class="btn btn-sm" id="backBtn" title="Go back one page (counts as a click)">Back</button>
+        <button class="btn btn-sm" id="peekBtn" title="Read the target's summary">Peek</button>
+        <button class="btn btn-sm btn-quiet hostonly party-only" id="abortBtn">End</button>
+        <button class="btn btn-sm btn-quiet daily-only" id="giveUpBtn">Give up</button>
+      </div>
+    </div>
+    <div class="race-grid">
+      <div class="article-wrap">
+        <div class="crumbs" id="crumbs"></div>
+        <article class="paper" id="raceArticle"></article>
+      </div>
+      <aside class="card racers party-only">
+        <h2 class="card-title">Standings</h2>
+        <ul id="racers"></ul>
+      </aside>
+    </div>
+    <div class="peek hidden" id="peek"><div class="peek-inner card"><div class="label">Target summary</div><h3 id="peekTitle"></h3><p id="peekText"></p><button class="btn btn-sm" id="peekClose">Close</button></div></div>
+  </section>
+
+  <!-- DAILY REPORT -->
+  <section id="scr-report" class="screen">
+    <div class="report-hero">
+      <div class="label" id="repKicker">Sprint</div>
+      <h2 class="report-headline" id="repHeadline">…</h2>
+      <p class="route" id="repRoute">…</p>
+    </div>
+
+    <div class="stat-row" id="repStats"></div>
+
+    <div class="report-grid">
+      <div class="card">
+        <h2 class="card-title">How you compare</h2>
+        <div id="repCompare"></div>
+        <div class="hist-wrap">
+          <div class="label">Clicks needed by everyone who finished today</div>
+          <div class="hist" id="repHist"></div>
+        </div>
+      </div>
+      <div class="card">
+        <h2 class="card-title">Your sprint history</h2>
+        <div class="mini-stats" id="repHistory"></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2 class="card-title">Routes</h2>
+      <div class="route-block">
+        <div class="label">Your route</div>
+        <div class="path" id="repMyPath"></div>
+      </div>
+      <div class="route-block" id="repBestBlock">
+        <div class="label" id="repBestLabel">Shortest route today</div>
+        <div class="path" id="repBestPath"></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2 class="card-title">Today's leaderboard</h2>
+      <ol class="leaderboard detailed" id="repTop"></ol>
+    </div>
+
+    <div class="report-actions">
+      <button class="btn btn-primary" id="shareBtn">Copy result</button>
+      <button class="btn" id="reportHomeBtn">Back to home</button>
+      <span class="muted" id="repNext"></span>
+    </div>
+    <p class="score-note">Score: start at 1,000, minus 30 per click and 1 for every 2 seconds. Finishing is always worth at least 50.</p>
+  </section>
+
+  <!-- PARTY RESULTS -->
+  <section id="scr-results" class="screen">
+    <div class="report-hero">
+      <div class="label" id="resKicker">Race complete</div>
+      <h2 class="report-headline" id="resHeadline">…</h2>
+      <p class="route" id="resSub">…</p>
+    </div>
+    <div class="card">
+      <h2 class="card-title">Routes</h2>
+      <ul class="logbook" id="logbook"></ul>
+    </div>
+    <div class="res-actions">
+      <button class="btn btn-primary btn-big hostonly" id="againBtn">Next race</button>
+      <button class="btn hostonly" id="toLobbyBtn">Back to lobby</button>
+      <div class="muted center guestonly">Waiting for the host.</div>
+    </div>
+  </section>
+</main>
+
+<div class="toast" id="toast"></div>
+<script src="app.js"></script>
+</body>
+</html>
