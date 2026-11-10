@@ -4,21 +4,26 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Wikisprint</title>
+<meta name="description" content="The daily link race. Study one Wikipedia article for 20 seconds, get dropped somewhere else, and click your way back.">
+<meta name="theme-color" content="#0a1f23">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,700;1,9..144,600;1,9..144,700&family=Figtree:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;1,6..72,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/opendyslexic@5.3.0/400.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/opendyslexic@5.3.0/700.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/opendyslexic@5.3.0/400-italic.css">
 <link rel="stylesheet" href="style.css">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><rect width='16' height='16' rx='3' fill='%230b0d14'/><path d='M3 4h2l1 6 2-6h1l2 6 1-6h2l-2 9h-2L9 8l-2 5H5z' fill='%233ee6f2'/></svg>">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8' shape-rendering='crispEdges'><rect width='8' height='8' fill='%230a1f23'/><rect x='1' y='2' width='1' height='4' fill='%235ce1e6'/><rect x='2' y='5' width='1' height='1' fill='%235ce1e6'/><rect x='3' y='3' width='1' height='2' fill='%23ff6fb5'/><rect x='4' y='5' width='1' height='1' fill='%235ce1e6'/><rect x='5' y='2' width='1' height='4' fill='%235ce1e6'/></svg>">
 </head>
 <body>
 
 <header class="topbar">
-  <a class="brand" href="/" id="brandLink">Wiki<span>sprint</span></a>
+  <a class="brand" href="/" id="brandLink" aria-label="Wikisprint home">WIKISPRINT</a>
   <dl class="tb-cells">
     <div class="tb-cell hidden" id="tbRoom"><dt>Room</dt><dd id="tbExpedition">—</dd></div>
-    <div class="tb-cell" id="tbMe"><dt>Player</dt><dd id="tbName">…</dd></div>
+    <div class="tb-cell" id="tbMe"><dt>Racer</dt><dd id="tbName">…</dd></div>
     <div class="tb-cell"><dt>Streak</dt><dd id="tbStreak">0</dd></div>
-    <div class="tb-cell tb-elo"><dt>Party Elo</dt><dd id="tbElo">—</dd></div>
+    <div class="tb-cell tb-elo"><dt>Elo</dt><dd id="tbElo">—</dd></div>
   </dl>
 </header>
 
@@ -26,132 +31,118 @@
 
   <!-- HOME -->
   <section id="scr-home" class="screen">
-    <div class="hero">
-      <div class="hero-copy">
-        <h1 class="logo">Wiki<span>sprint</span></h1>
-        <p class="tagline">One Wikipedia article a day. Study it for 20 seconds, get dropped somewhere else, and find your way back using nothing but links.</p>
+    <div class="scene">
+      <svg class="scene-art" viewBox="0 0 192 100" preserveAspectRatio="xMidYMax slice" shape-rendering="crispEdges" aria-hidden="true"><rect x="0" y="0" width="192" height="28" fill="#52aeea"/><rect x="0" y="28" width="192" height="14" fill="#5fb6ee"/><rect x="0" y="42" width="192" height="12" fill="#74c2f2"/><rect x="0" y="54" width="192" height="10" fill="#8dcff5"/><rect x="0" y="64" width="192" height="8" fill="#a9dcf8"/><rect x="0" y="72" width="192" height="6" fill="#c6e8fa"/><rect x="0" y="78" width="192" height="8" fill="#e2f4fc"/><g transform="translate(0 28)"><g class="sun"><rect x="153" y="0" width="6" height="1" fill="#ffe27a"/><rect x="151" y="1" width="10" height="1" fill="#ffe27a"/><rect x="150" y="2" width="12" height="1" fill="#ffe27a"/><rect x="150" y="3" width="12" height="1" fill="#ffe27a"/><rect x="150" y="4" width="12" height="1" fill="#ffe27a"/><rect x="150" y="5" width="12" height="1" fill="#ffe27a"/><rect x="150" y="6" width="12" height="1" fill="#ffe27a"/><rect x="150" y="7" width="12" height="1" fill="#ffe27a"/><rect x="151" y="8" width="10" height="1" fill="#ffe27a"/><rect x="153" y="9" width="6" height="1" fill="#ffe27a"/><rect x="153" y="2" width="3" height="2" fill="#fff3b8"/></g><defs><g id="cl"><rect x="2" y="0" width="7" height="2" fill="#fff"/><rect x="9" y="1" width="3" height="1" fill="#fff"/><rect x="0" y="2" width="14" height="3" fill="#fff"/><rect x="1" y="5" width="12" height="1" fill="#cfe7f7"/></g></defs><g class="drift" style="animation-duration:70s;animation-delay:-10s"><use href="#cl" transform="translate(20 -16) scale(1)"/></g><g class="drift" style="animation-duration:95s;animation-delay:-60s"><use href="#cl" transform="translate(80 -4) scale(1.4)"/></g><g class="drift" style="animation-duration:60s;animation-delay:-25s"><use href="#cl" transform="translate(130 22) scale(0.8)"/></g><g class="drift" style="animation-duration:85s;animation-delay:-45s"><use href="#cl" transform="translate(-10 26) scale(1.2)"/></g><g class="drift" style="animation-duration:75s;animation-delay:-5s"><use href="#cl" transform="translate(170 6) scale(1)"/></g><rect x="0" y="49" width="5" height="9" fill="#3f5fa8"/><rect x="1" y="51" width="3" height="1" fill="rgba(255,255,255,.35)"/><rect x="1" y="55" width="3" height="1" fill="rgba(255,255,255,.25)"/><rect x="4" y="49" width="1" height="9" fill="rgba(0,0,0,.18)"/><rect x="5" y="46" width="8" height="12" fill="#5a4b9c"/><rect x="6" y="48" width="6" height="1" fill="rgba(255,255,255,.35)"/><rect x="6" y="55" width="6" height="1" fill="rgba(255,255,255,.25)"/><rect x="12" y="46" width="1" height="12" fill="rgba(0,0,0,.18)"/><rect x="13" y="50" width="7" height="8" fill="#8a4f8f"/><rect x="14" y="52" width="5" height="1" fill="rgba(255,255,255,.35)"/><rect x="14" y="55" width="5" height="1" fill="rgba(255,255,255,.25)"/><rect x="19" y="50" width="1" height="8" fill="rgba(0,0,0,.18)"/><rect x="20" y="44" width="6" height="14" fill="#b2566e"/><rect x="21" y="46" width="4" height="1" fill="rgba(255,255,255,.35)"/><rect x="21" y="55" width="4" height="1" fill="rgba(255,255,255,.25)"/><rect x="25" y="44" width="1" height="14" fill="rgba(0,0,0,.18)"/><rect x="26" y="47" width="5" height="11" fill="#c9704f"/><rect x="27" y="49" width="3" height="1" fill="rgba(255,255,255,.35)"/><rect x="27" y="55" width="3" height="1" fill="rgba(255,255,255,.25)"/><rect x="30" y="47" width="1" height="11" fill="rgba(0,0,0,.18)"/><rect x="31" y="51" width="8" height="7" fill="#3f7f86"/><rect x="32" y="53" width="6" height="1" fill="rgba(255,255,255,.35)"/><rect x="32" y="55" width="6" height="1" fill="rgba(255,255,255,.25)"/><rect x="38" y="51" width="1" height="7" fill="rgba(0,0,0,.18)"/><rect x="39" y="45" width="7" height="13" fill="#4e6bb8"/><rect x="40" y="47" width="5" height="1" fill="rgba(255,255,255,.35)"/><rect x="40" y="55" width="5" height="1" fill="rgba(255,255,255,.25)"/><rect x="45" y="45" width="1" height="13" fill="rgba(0,0,0,.18)"/><rect x="46" y="48" width="6" height="10" fill="#6d58a8"/><rect x="47" y="50" width="4" height="1" fill="rgba(255,255,255,.35)"/><rect x="47" y="55" width="4" height="1" fill="rgba(255,255,255,.25)"/><rect x="51" y="48" width="1" height="10" fill="rgba(0,0,0,.18)"/><rect x="52" y="46" width="5" height="12" fill="#a2507a"/><rect x="53" y="48" width="3" height="1" fill="rgba(255,255,255,.35)"/><rect x="53" y="55" width="3" height="1" fill="rgba(255,255,255,.25)"/><rect x="56" y="46" width="1" height="12" fill="rgba(0,0,0,.18)"/><rect x="57" y="49" width="8" height="9" fill="#2f6f73"/><rect x="58" y="51" width="6" height="1" fill="rgba(255,255,255,.35)"/><rect x="58" y="55" width="6" height="1" fill="rgba(255,255,255,.25)"/><rect x="64" y="49" width="1" height="9" fill="rgba(0,0,0,.18)"/><rect x="65" y="43" width="7" height="15" fill="#3f5fa8"/><rect x="66" y="45" width="5" height="1" fill="rgba(255,255,255,.35)"/><rect x="66" y="55" width="5" height="1" fill="rgba(255,255,255,.25)"/><rect x="71" y="43" width="1" height="15" fill="rgba(0,0,0,.18)"/><rect x="72" y="50" width="6" height="8" fill="#5a4b9c"/><rect x="73" y="52" width="4" height="1" fill="rgba(255,255,255,.35)"/><rect x="73" y="55" width="4" height="1" fill="rgba(255,255,255,.25)"/><rect x="77" y="50" width="1" height="8" fill="rgba(0,0,0,.18)"/><rect x="78" y="47" width="5" height="11" fill="#8a4f8f"/><rect x="79" y="49" width="3" height="1" fill="rgba(255,255,255,.35)"/><rect x="79" y="55" width="3" height="1" fill="rgba(255,255,255,.25)"/><rect x="82" y="47" width="1" height="11" fill="rgba(0,0,0,.18)"/><rect x="83" y="45" width="8" height="13" fill="#b2566e"/><rect x="84" y="47" width="6" height="1" fill="rgba(255,255,255,.35)"/><rect x="84" y="55" width="6" height="1" fill="rgba(255,255,255,.25)"/><rect x="90" y="45" width="1" height="13" fill="rgba(0,0,0,.18)"/><rect x="91" y="49" width="7" height="9" fill="#c9704f"/><rect x="92" y="51" width="5" height="1" fill="rgba(255,255,255,.35)"/><rect x="92" y="55" width="5" height="1" fill="rgba(255,255,255,.25)"/><rect x="97" y="49" width="1" height="9" fill="rgba(0,0,0,.18)"/><rect x="98" y="46" width="6" height="12" fill="#3f7f86"/><rect x="99" y="48" width="4" height="1" fill="rgba(255,255,255,.35)"/><rect x="99" y="55" width="4" height="1" fill="rgba(255,255,255,.25)"/><rect x="103" y="46" width="1" height="12" fill="rgba(0,0,0,.18)"/><rect x="104" y="48" width="5" height="10" fill="#4e6bb8"/><rect x="105" y="50" width="3" height="1" fill="rgba(255,255,255,.35)"/><rect x="105" y="55" width="3" height="1" fill="rgba(255,255,255,.25)"/><rect x="108" y="48" width="1" height="10" fill="rgba(0,0,0,.18)"/><rect x="109" y="44" width="8" height="14" fill="#6d58a8"/><rect x="110" y="46" width="6" height="1" fill="rgba(255,255,255,.35)"/><rect x="110" y="55" width="6" height="1" fill="rgba(255,255,255,.25)"/><rect x="116" y="44" width="1" height="14" fill="rgba(0,0,0,.18)"/><rect x="117" y="50" width="7" height="8" fill="#a2507a"/><rect x="118" y="52" width="5" height="1" fill="rgba(255,255,255,.35)"/><rect x="118" y="55" width="5" height="1" fill="rgba(255,255,255,.25)"/><rect x="123" y="50" width="1" height="8" fill="rgba(0,0,0,.18)"/><rect x="124" y="47" width="6" height="11" fill="#2f6f73"/><rect x="125" y="49" width="4" height="1" fill="rgba(255,255,255,.35)"/><rect x="125" y="55" width="4" height="1" fill="rgba(255,255,255,.25)"/><rect x="129" y="47" width="1" height="11" fill="rgba(0,0,0,.18)"/><rect x="130" y="45" width="5" height="13" fill="#3f5fa8"/><rect x="131" y="47" width="3" height="1" fill="rgba(255,255,255,.35)"/><rect x="131" y="55" width="3" height="1" fill="rgba(255,255,255,.25)"/><rect x="134" y="45" width="1" height="13" fill="rgba(0,0,0,.18)"/><rect x="135" y="49" width="8" height="9" fill="#5a4b9c"/><rect x="136" y="51" width="6" height="1" fill="rgba(255,255,255,.35)"/><rect x="136" y="55" width="6" height="1" fill="rgba(255,255,255,.25)"/><rect x="142" y="49" width="1" height="9" fill="rgba(0,0,0,.18)"/><rect x="143" y="46" width="7" height="12" fill="#8a4f8f"/><rect x="144" y="48" width="5" height="1" fill="rgba(255,255,255,.35)"/><rect x="144" y="55" width="5" height="1" fill="rgba(255,255,255,.25)"/><rect x="149" y="46" width="1" height="12" fill="rgba(0,0,0,.18)"/><rect x="150" y="48" width="6" height="10" fill="#b2566e"/><rect x="151" y="50" width="4" height="1" fill="rgba(255,255,255,.35)"/><rect x="151" y="55" width="4" height="1" fill="rgba(255,255,255,.25)"/><rect x="155" y="48" width="1" height="10" fill="rgba(0,0,0,.18)"/><rect x="156" y="51" width="5" height="7" fill="#c9704f"/><rect x="157" y="53" width="3" height="1" fill="rgba(255,255,255,.35)"/><rect x="157" y="55" width="3" height="1" fill="rgba(255,255,255,.25)"/><rect x="160" y="51" width="1" height="7" fill="rgba(0,0,0,.18)"/><rect x="161" y="44" width="8" height="14" fill="#3f7f86"/><rect x="162" y="46" width="6" height="1" fill="rgba(255,255,255,.35)"/><rect x="162" y="55" width="6" height="1" fill="rgba(255,255,255,.25)"/><rect x="168" y="44" width="1" height="14" fill="rgba(0,0,0,.18)"/><rect x="169" y="47" width="7" height="11" fill="#4e6bb8"/><rect x="170" y="49" width="5" height="1" fill="rgba(255,255,255,.35)"/><rect x="170" y="55" width="5" height="1" fill="rgba(255,255,255,.25)"/><rect x="175" y="47" width="1" height="11" fill="rgba(0,0,0,.18)"/><rect x="176" y="49" width="6" height="9" fill="#6d58a8"/><rect x="177" y="51" width="4" height="1" fill="rgba(255,255,255,.35)"/><rect x="177" y="55" width="4" height="1" fill="rgba(255,255,255,.25)"/><rect x="181" y="49" width="1" height="9" fill="rgba(0,0,0,.18)"/><rect x="182" y="45" width="5" height="13" fill="#a2507a"/><rect x="183" y="47" width="3" height="1" fill="rgba(255,255,255,.35)"/><rect x="183" y="55" width="3" height="1" fill="rgba(255,255,255,.25)"/><rect x="186" y="45" width="1" height="13" fill="rgba(0,0,0,.18)"/><rect x="187" y="48" width="8" height="10" fill="#2f6f73"/><rect x="188" y="50" width="6" height="1" fill="rgba(255,255,255,.35)"/><rect x="188" y="55" width="6" height="1" fill="rgba(255,255,255,.25)"/><rect x="194" y="48" width="1" height="10" fill="rgba(0,0,0,.18)"/><rect x="0" y="58" width="192" height="14" fill="#c9573f"/><rect x="0" y="58" width="192" height="1" fill="#e07a5f"/><rect x="0" y="64" width="192" height="1" fill="#f3e9df"/><rect x="0" y="70" width="192" height="1" fill="#f3e9df"/><g class="dashes"><rect x="-12" y="67" width="6" height="1" fill="rgba(243,233,223,.7)"/><rect x="0" y="67" width="6" height="1" fill="rgba(243,233,223,.7)"/><rect x="12" y="67" width="6" height="1" fill="rgba(243,233,223,.7)"/><rect x="24" y="67" width="6" height="1" fill="rgba(243,233,223,.7)"/><rect x="36" y="67" width="6" height="1" fill="rgba(243,233,223,.7)"/><rect x="48" y="67" width="6" height="1" fill="rgba(243,233,223,.7)"/><rect x="60" y="67" width="6" height="1" fill="rgba(243,233,223,.7)"/><rect x="72" y="67" width="6" height="1" fill="rgba(243,233,223,.7)"/><rect x="84" y="67" width="6" height="1" fill="rgba(243,233,223,.7)"/><rect x="96" y="67" width="6" height="1" fill="rgba(243,233,223,.7)"/><rect x="108" y="67" width="6" height="1" fill="rgba(243,233,223,.7)"/><rect x="120" y="67" width="6" height="1" fill="rgba(243,233,223,.7)"/><rect x="132" y="67" width="6" height="1" fill="rgba(243,233,223,.7)"/><rect x="144" y="67" width="6" height="1" fill="rgba(243,233,223,.7)"/><rect x="156" y="67" width="6" height="1" fill="rgba(243,233,223,.7)"/><rect x="168" y="67" width="6" height="1" fill="rgba(243,233,223,.7)"/><rect x="180" y="67" width="6" height="1" fill="rgba(243,233,223,.7)"/><rect x="192" y="67" width="6" height="1" fill="rgba(243,233,223,.7)"/></g><g class="runner" transform="translate(46 54)"><g class="fa"><rect x="2" y="0" width="1" height="1" fill="#3b2a20"/><rect x="3" y="0" width="1" height="1" fill="#3b2a20"/><rect x="4" y="0" width="1" height="1" fill="#3b2a20"/><rect x="2" y="1" width="1" height="1" fill="#3b2a20"/><rect x="3" y="1" width="1" height="1" fill="#f2c28b"/><rect x="4" y="1" width="1" height="1" fill="#f2c28b"/><rect x="2" y="2" width="1" height="1" fill="#f2c28b"/><rect x="3" y="2" width="1" height="1" fill="#f2c28b"/><rect x="4" y="2" width="1" height="1" fill="#f2c28b"/><rect x="1" y="3" width="1" height="1" fill="#ff6fb5"/><rect x="2" y="3" width="1" height="1" fill="#ff6fb5"/><rect x="3" y="3" width="1" height="1" fill="#ff6fb5"/><rect x="4" y="3" width="1" height="1" fill="#f2c28b"/><rect x="0" y="4" width="1" height="1" fill="#f2c28b"/><rect x="1" y="4" width="1" height="1" fill="#ff6fb5"/><rect x="2" y="4" width="1" height="1" fill="#ff6fb5"/><rect x="3" y="4" width="1" height="1" fill="#ff6fb5"/><rect x="4" y="4" width="1" height="1" fill="#f2c28b"/><rect x="2" y="5" width="1" height="1" fill="#ff6fb5"/><rect x="3" y="5" width="1" height="1" fill="#ff6fb5"/><rect x="4" y="5" width="1" height="1" fill="#ff6fb5"/><rect x="2" y="6" width="1" height="1" fill="#2a3b7a"/><rect x="3" y="6" width="1" height="1" fill="#2a3b7a"/><rect x="4" y="6" width="1" height="1" fill="#2a3b7a"/><rect x="1" y="7" width="1" height="1" fill="#2a3b7a"/><rect x="2" y="7" width="1" height="1" fill="#2a3b7a"/><rect x="4" y="7" width="1" height="1" fill="#2a3b7a"/><rect x="5" y="7" width="1" height="1" fill="#2a3b7a"/><rect x="0" y="8" width="1" height="1" fill="#f2c28b"/><rect x="1" y="8" width="1" height="1" fill="#f2c28b"/><rect x="5" y="8" width="1" height="1" fill="#f2c28b"/><rect x="6" y="8" width="1" height="1" fill="#f2c28b"/><rect x="0" y="9" width="1" height="1" fill="#ffffff"/><rect x="6" y="9" width="1" height="1" fill="#ffffff"/></g><g class="fb"><rect x="2" y="0" width="1" height="1" fill="#3b2a20"/><rect x="3" y="0" width="1" height="1" fill="#3b2a20"/><rect x="4" y="0" width="1" height="1" fill="#3b2a20"/><rect x="2" y="1" width="1" height="1" fill="#3b2a20"/><rect x="3" y="1" width="1" height="1" fill="#f2c28b"/><rect x="4" y="1" width="1" height="1" fill="#f2c28b"/><rect x="2" y="2" width="1" height="1" fill="#f2c28b"/><rect x="3" y="2" width="1" height="1" fill="#f2c28b"/><rect x="4" y="2" width="1" height="1" fill="#f2c28b"/><rect x="2" y="3" width="1" height="1" fill="#ff6fb5"/><rect x="3" y="3" width="1" height="1" fill="#ff6fb5"/><rect x="4" y="3" width="1" height="1" fill="#ff6fb5"/><rect x="5" y="3" width="1" height="1" fill="#ff6fb5"/><rect x="2" y="4" width="1" height="1" fill="#ff6fb5"/><rect x="3" y="4" width="1" height="1" fill="#ff6fb5"/><rect x="4" y="4" width="1" height="1" fill="#ff6fb5"/><rect x="5" y="4" width="1" height="1" fill="#f2c28b"/><rect x="1" y="5" width="1" height="1" fill="#f2c28b"/><rect x="2" y="5" width="1" height="1" fill="#ff6fb5"/><rect x="3" y="5" width="1" height="1" fill="#ff6fb5"/><rect x="4" y="5" width="1" height="1" fill="#ff6fb5"/><rect x="2" y="6" width="1" height="1" fill="#2a3b7a"/><rect x="3" y="6" width="1" height="1" fill="#2a3b7a"/><rect x="4" y="6" width="1" height="1" fill="#2a3b7a"/><rect x="2" y="7" width="1" height="1" fill="#2a3b7a"/><rect x="3" y="7" width="1" height="1" fill="#2a3b7a"/><rect x="4" y="7" width="1" height="1" fill="#2a3b7a"/><rect x="2" y="8" width="1" height="1" fill="#f2c28b"/><rect x="4" y="8" width="1" height="1" fill="#f2c28b"/><rect x="2" y="9" width="1" height="1" fill="#ffffff"/><rect x="4" y="9" width="1" height="1" fill="#ffffff"/></g></g><g class="dust"><rect x="40" y="62" width="2" height="1" fill="#f0b9a6"/><rect x="36" y="61" width="1" height="1" fill="#f0b9a6"/></g></g></svg>
+      <div class="scene-title">
+        <h1 class="logo" data-text="WIKISPRINT">WIKISPRINT</h1>
+        <p class="kicker">The daily link race</p>
+        <p class="sub">20 seconds to study &middot; dropped anywhere &middot; links only</p>
       </div>
-      <svg class="linkmap" viewBox="0 0 440 300" aria-hidden="true">
-        <g class="edges">
-          <path d="M70 60 C 140 40, 170 120, 220 110"/><path d="M70 60 C 90 140, 60 190, 90 230"/>
-          <path d="M220 110 C 260 60, 320 60, 360 70"/><path d="M90 230 C 160 250, 200 240, 250 210"/>
-          <path d="M360 70 C 400 120, 380 170, 370 200"/><path d="M220 110 C 230 160, 240 180, 250 210"/>
-          <path d="M250 210 C 300 260, 340 250, 370 200"/>
-        </g>
-        <path class="route" d="M70 60 C 140 40, 170 120, 220 110 C 230 160, 240 180, 250 210 C 300 260, 340 250, 370 200"/>
-        <g class="nodes">
-          <g transform="translate(70 60)"><rect x="-44" y="-15" width="88" height="30" rx="15"/><text>Jazz</text></g>
-          <g transform="translate(220 110)"><rect x="-56" y="-15" width="112" height="30" rx="15"/><text>New Orleans</text></g>
-          <g transform="translate(360 70)"><rect x="-44" y="-15" width="88" height="30" rx="15"/><text>Ferry</text></g>
-          <g transform="translate(90 230)"><rect x="-50" y="-15" width="100" height="30" rx="15"/><text>Saxophone</text></g>
-          <g transform="translate(250 210)"><rect x="-58" y="-15" width="116" height="30" rx="15"/><text>Mississippi</text></g>
-          <g class="goal" transform="translate(370 200)"><rect x="-52" y="-17" width="104" height="34" rx="17"/><text>Mark Twain</text></g>
-        </g>
-        <g class="start-dot" transform="translate(70 60)"><circle r="5" cx="-54" cy="0"/></g>
-      </svg>
     </div>
 
-    <div class="daily-grid">
-      <div class="bib" id="dailyCard">
-        <i class="pin tl"></i><i class="pin tr"></i><i class="pin bl"></i><i class="pin br"></i>
-        <div class="bib-strip"><span>Daily sprint</span><span id="dailyDate">Today</span></div>
-        <div class="bib-main">
-          <div class="bib-num"><small>No.</small><span id="dailyNum">–</span></div>
-          <div class="bib-count" id="dailyPlayers"></div>
+    <div class="below">
+      <div class="daily" id="dailyCard">
+        <div class="daily-tag"><span>Sprint #<span id="dailyNum">–</span></span><span class="sep">·</span><span id="dailyDate">today</span><span class="live" id="dailyPlayers"></span></div>
+        <div class="daily-body" id="dailyBody"><p class="muted">Loading today's sprint…</p></div>
+      </div>
+
+      <div class="home-grid">
+        <div class="panel">
+          <h2 class="panel-title">Today's best</h2>
+          <ol class="leaderboard" id="dailyTop"><li class="muted">Loading…</li></ol>
         </div>
-        <div class="bib-body" id="dailyBody"><p class="muted">Loading today's sprint…</p></div>
+        <div class="panel">
+          <h2 class="panel-title">How to play</h2>
+          <ol class="steps">
+            <li><b>Study.</b> 20 seconds with the target article.</li>
+            <li><b>Drop.</b> Everyone starts on the same random page.</li>
+            <li><b>Click.</b> Links only. No search, no typing URLs.</li>
+            <li><b>Compare.</b> Fewer clicks and less time = higher score.</li>
+          </ol>
+        </div>
       </div>
 
-      <div class="card">
-        <h2 class="card-title">Today's best</h2>
-        <ol class="leaderboard" id="dailyTop"><li class="muted">Loading…</li></ol>
-      </div>
-    </div>
-
-    <ol class="howto">
-      <li><b>1</b><span>You get 20 seconds to read today's target article.</span></li>
-      <li><b>2</b><span>You're dropped on a different article, the same one for everyone.</span></li>
-      <li><b>3</b><span>Click links to reach the target. No search, no typing URLs.</span></li>
-      <li><b>4</b><span>See how your clicks and time compare with everyone else.</span></li>
-    </ol>
-
-    <h2 class="section-title">Play with friends</h2>
-    <div class="home-grid">
-      <div class="card">
-        <label class="field">
-          <span>Your name, shown on leaderboards</span>
-          <input id="nameInput" maxlength="20" placeholder="Your name" autocomplete="off">
-        </label>
-        <p class="hint">Party races use random articles. Everyone in the room races at once, and the first to arrive wins Elo.</p>
-        <div class="party-actions">
-          <button class="btn" id="createBtn">Create a room</button>
-          <div class="join-row">
-            <input id="codeInput" maxlength="4" placeholder="Code" autocomplete="off" spellcheck="false" aria-label="Room code">
-            <button class="btn" id="joinBtn">Join</button>
+      <h2 class="section-title">Party mode</h2>
+      <div class="home-grid">
+        <div class="panel">
+          <p class="hint">Make a room, send the link, and race your friends on the same random pair. First one there takes Elo from everyone else.</p>
+          <label class="field">
+            <span>Your name</span>
+            <input id="nameInput" maxlength="20" placeholder="Your name" autocomplete="off">
+          </label>
+          <div class="party-actions">
+            <button class="btn btn-primary" id="createBtn">Create room</button>
+            <div class="join-row">
+              <input id="codeInput" maxlength="4" placeholder="CODE" autocomplete="off" spellcheck="false" aria-label="Room code">
+              <button class="btn" id="joinBtn">Join</button>
+            </div>
           </div>
+          <div class="err" id="homeErr"></div>
         </div>
-        <div class="err" id="homeErr"></div>
+        <div class="panel">
+          <h2 class="panel-title">Party Elo</h2>
+          <ol class="leaderboard" id="leaderboard"><li class="muted">Loading…</li></ol>
+        </div>
       </div>
 
-      <div class="card">
-        <h2 class="card-title">Party Elo</h2>
-        <ol class="leaderboard" id="leaderboard"><li class="muted">Loading…</li></ol>
-      </div>
+      <footer class="foot">
+        <span>WIKISPRINT</span>
+        <span>Articles from <a href="https://en.wikipedia.org" target="_blank" rel="noopener">Wikipedia</a> (CC BY-SA). Not affiliated with the Wikimedia Foundation.</span>
+      </footer>
     </div>
   </section>
 
   <!-- LOBBY -->
-  <section id="scr-lobby" class="screen">
+  <section id="scr-lobby" class="screen pad">
     <div class="lobby-head">
       <div>
         <div class="label">Room code</div>
         <div class="code" id="lobbyCode">----</div>
       </div>
       <div class="lobby-actions">
-        <button class="btn" id="copyBtn">Copy invite link</button>
+        <button class="btn" id="copyBtn">Copy invite</button>
         <button class="btn btn-quiet" id="leaveBtn">Leave</button>
       </div>
     </div>
-
-    <div class="lobby-grid">
-      <div class="card">
-        <h2 class="card-title">Players <span class="count" id="crewCount">0</span></h2>
+    <div class="home-grid">
+      <div class="panel">
+        <h2 class="panel-title">Racers <span class="count" id="crewCount">0</span></h2>
         <ul class="manifest" id="manifest"></ul>
       </div>
-      <div class="card">
-        <h2 class="card-title">Settings</h2>
-        <div class="setting"><span>Study time</span><b>20 seconds</b></div>
+      <div class="panel">
+        <h2 class="panel-title">Settings</h2>
+        <div class="setting"><span>Study time</span><b>20 sec</b></div>
         <div class="setting">
           <span>Time limit</span>
           <div class="seg" id="raceSeg">
             <button data-m="3">3m</button><button data-m="5">5m</button><button data-m="10">10m</button><button data-m="15">15m</button>
           </div>
         </div>
-        <div class="setting"><span>Winning</span><b>First to the target</b></div>
+        <div class="setting"><span>Winning</span><b>First to arrive</b></div>
         <div class="err" id="lobbyErr"></div>
         <button class="btn btn-primary btn-big" id="startBtn">Start race</button>
-        <div class="muted center" id="waitHost">Waiting for the host to start.</div>
+        <div class="muted center blink" id="waitHost">Waiting for host…</div>
       </div>
     </div>
   </section>
 
   <!-- LOADING -->
-  <section id="scr-loading" class="screen center-screen">
+  <section id="scr-loading" class="screen pad center-screen">
     <div class="loading">
-      <div class="bar"><i></i></div>
+      <div class="dots"><i></i><i></i><i></i></div>
       <div>Picking articles…</div>
     </div>
   </section>
 
   <!-- STUDY (shared) -->
-  <section id="scr-study" class="screen">
+  <section id="scr-study" class="screen pad">
     <div class="study-head">
       <div class="study-banner">
         <div>
           <div class="label">Your target</div>
           <div class="target-title" id="studyTitle">…</div>
         </div>
-        <div class="countdown"><span id="studyClock">20</span><small>seconds</small></div>
+        <div class="countdown"><span id="studyClock">20</span><small>sec</small></div>
       </div>
       <div class="study-bar"><div id="studyFill"></div></div>
     </div>
@@ -159,7 +150,7 @@
   </section>
 
   <!-- RACE (shared) -->
-  <section id="scr-race" class="screen">
+  <section id="scr-race" class="screen pad">
     <div class="race-bar">
       <div class="rb-target"><span class="label">Target</span><b id="raceTarget">…</b></div>
       <div class="rb-stat"><span class="label">Clicks</span><b id="raceClicks">0</b></div>
@@ -176,41 +167,38 @@
         <div class="crumbs" id="crumbs"></div>
         <article class="paper" id="raceArticle"></article>
       </div>
-      <aside class="card racers party-only">
-        <h2 class="card-title">Standings</h2>
+      <aside class="panel racers party-only">
+        <h2 class="panel-title">Standings</h2>
         <ul id="racers"></ul>
       </aside>
     </div>
-    <div class="peek hidden" id="peek"><div class="peek-inner card"><div class="label">Target summary</div><h3 id="peekTitle"></h3><p id="peekText"></p><button class="btn btn-sm" id="peekClose">Close</button></div></div>
+    <div class="peek hidden" id="peek"><div class="peek-inner panel"><div class="label">Target summary</div><h3 id="peekTitle"></h3><p id="peekText"></p><button class="btn btn-sm" id="peekClose">Close</button></div></div>
   </section>
 
   <!-- DAILY REPORT -->
-  <section id="scr-report" class="screen">
+  <section id="scr-report" class="screen pad">
     <div class="report-hero">
       <div class="label" id="repKicker">Sprint</div>
       <h2 class="report-headline" id="repHeadline">…</h2>
       <p class="route" id="repRoute">…</p>
     </div>
-
     <div class="stat-row" id="repStats"></div>
-
     <div class="report-grid">
-      <div class="card">
-        <h2 class="card-title">How you compare</h2>
+      <div class="panel">
+        <h2 class="panel-title">How you compare</h2>
         <div id="repCompare"></div>
         <div class="hist-wrap">
-          <div class="label">Clicks needed by everyone who finished today</div>
+          <div class="label">Clicks needed by everyone who finished</div>
           <div class="hist" id="repHist"></div>
         </div>
       </div>
-      <div class="card">
-        <h2 class="card-title">Your sprint history</h2>
+      <div class="panel">
+        <h2 class="panel-title">Your record</h2>
         <div class="mini-stats" id="repHistory"></div>
       </div>
     </div>
-
-    <div class="card">
-      <h2 class="card-title">Routes</h2>
+    <div class="panel">
+      <h2 class="panel-title">Routes</h2>
       <div class="route-block">
         <div class="label">Your route</div>
         <div class="path" id="repMyPath"></div>
@@ -220,35 +208,33 @@
         <div class="path" id="repBestPath"></div>
       </div>
     </div>
-
-    <div class="card">
-      <h2 class="card-title">Today's leaderboard</h2>
+    <div class="panel">
+      <h2 class="panel-title">Today's leaderboard</h2>
       <ol class="leaderboard detailed" id="repTop"></ol>
     </div>
-
     <div class="report-actions">
       <button class="btn btn-primary" id="shareBtn">Copy result</button>
-      <button class="btn" id="reportHomeBtn">Back to home</button>
+      <button class="btn" id="reportHomeBtn">Home</button>
       <span class="muted" id="repNext"></span>
     </div>
     <p class="score-note">Score: start at 1,000, minus 30 per click and 1 for every 2 seconds. Finishing is always worth at least 50.</p>
   </section>
 
   <!-- PARTY RESULTS -->
-  <section id="scr-results" class="screen">
+  <section id="scr-results" class="screen pad">
     <div class="report-hero">
       <div class="label" id="resKicker">Race complete</div>
       <h2 class="report-headline" id="resHeadline">…</h2>
       <p class="route" id="resSub">…</p>
     </div>
-    <div class="card">
-      <h2 class="card-title">Routes</h2>
+    <div class="panel">
+      <h2 class="panel-title">Routes</h2>
       <ul class="logbook" id="logbook"></ul>
     </div>
     <div class="res-actions">
       <button class="btn btn-primary btn-big hostonly" id="againBtn">Next race</button>
       <button class="btn hostonly" id="toLobbyBtn">Back to lobby</button>
-      <div class="muted center guestonly">Waiting for the host.</div>
+      <div class="muted center blink guestonly">Waiting for host…</div>
     </div>
   </section>
 </main>

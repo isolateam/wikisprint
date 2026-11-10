@@ -17,7 +17,7 @@ let game = null;         // the round on screen: {mode, key, target, start, stud
 let studyKey = null, raceKey = null;
 let hist = [];           // local navigation stack during a race
 let navBusy = false;
-const AVATAR_COLORS = ['#3ee6f2', '#ff4f9a', '#f5d547', '#5ad68f', '#b78bff', '#ff9f5a', '#5aa8ff', '#ff6e7e'];
+const AVATAR_COLORS = ['#ffe866', '#ffb9a6', '#b9d3ff', '#c6ebb2', '#e4c9ff', '#ffd59e', '#a9e4e0', '#f7c1dc'];
 const colorFor = id => AVATAR_COLORS[[...id].reduce((a, c) => a + c.charCodeAt(0), 0) % AVATAR_COLORS.length];
 const serverNow = () => Date.now() + skew;
 const fmtClock = ms => { ms = Math.max(0, ms); const s = Math.floor(ms / 1000); return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`; };
@@ -116,7 +116,7 @@ function leftRoom(msg) {
   if (msg) toast(msg);
 }
 async function loadMe() {
-  try { me = await api('/api/me', { name: store.get('rh_name') ? myName : undefined }); renderMe(); } catch {}
+  try { store.set('rh_name', myName); me = await api('/api/me', { name: myName }); renderMe(); } catch {}
 }
 
 // ---------------- home: party controls ----------------
