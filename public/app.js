@@ -119,6 +119,31 @@ async function loadMe() {
   try { store.set('rh_name', myName); me = await api('/api/me', { name: myName }); renderMe(); } catch {}
 }
 
+// ---------------- settings (gear in the top bar) ----------------
+const FONTS = ['default', 'dyslexic'];
+function applyFont(f) {
+  if (!FONTS.includes(f)) f = 'default';
+  if (f === 'default') delete document.documentElement.dataset.font;
+  else document.documentElement.dataset.font = f;
+  store.set('ws_font', f);
+  document.querySelectorAll('input[name="font"]').forEach(i => { i.checked = i.value === f; });
+}
+applyFont(store.get('ws_font') || 'default');
+document.querySelectorAll('input[name="font"]').forEach(i => i.addEventListener('change', () => applyFont(i.value)));
+
+function toggleSettings(open) {
+  const panel = $('#settings'), btn = $('#gearBtn');
+  open = open ?? panel.classList.contains('hidden');
+  panel.classList.toggle('hidden', !open);
+  btn.setAttribute('aria-expanded', String(open));
+  if (open) panel.querySelector('input:checked')?.focus();
+}
+$('#gearBtn').addEventListener('click', e => { e.stopPropagation(); toggleSettings(); });
+document.addEventListener('click', e => { if (!e.target.closest('#settings, #gearBtn')) toggleSettings(false); });
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape' && !$('#settings').classList.contains('hidden')) { toggleSettings(false); $('#gearBtn').focus(); }
+});
+
 // ---------------- home: party controls ----------------
 $('#nameInput').value = myName;
 let renameT;

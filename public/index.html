@@ -15,18 +15,36 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/opendyslexic@5.3.0/700.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/opendyslexic@5.3.0/400-italic.css">
 <link rel="stylesheet" href="style.css">
+<script>try { var f = localStorage.getItem('ws_font'); if (f) document.documentElement.dataset.font = f; } catch (e) {}</script>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8' shape-rendering='crispEdges'><rect width='8' height='8' fill='%230a1f23'/><rect x='1' y='2' width='1' height='4' fill='%235ce1e6'/><rect x='2' y='5' width='1' height='1' fill='%235ce1e6'/><rect x='3' y='3' width='1' height='2' fill='%23ff6fb5'/><rect x='4' y='5' width='1' height='1' fill='%235ce1e6'/><rect x='5' y='2' width='1' height='4' fill='%235ce1e6'/></svg>">
 </head>
 <body>
 
 <header class="topbar">
   <a class="brand" href="/" id="brandLink" aria-label="Wikisprint home">WIKISPRINT</a>
+  <div class="tb-right">
   <dl class="tb-cells">
     <div class="tb-cell hidden" id="tbRoom"><dt>Room</dt><dd id="tbExpedition">—</dd></div>
     <div class="tb-cell" id="tbMe"><dt>Racer</dt><dd id="tbName">…</dd></div>
     <div class="tb-cell"><dt>Streak</dt><dd id="tbStreak">0</dd></div>
     <div class="tb-cell tb-elo"><dt>Elo</dt><dd id="tbElo">—</dd></div>
   </dl>
+  <button class="gear" id="gearBtn" type="button" aria-label="Settings" aria-haspopup="dialog" aria-expanded="false" aria-controls="settings">
+    <svg viewBox="0 0 16 16" shape-rendering="crispEdges" aria-hidden="true">
+      <rect x="7" y="1" width="2" height="2"/><rect x="7" y="13" width="2" height="2"/><rect x="1" y="7" width="2" height="2"/><rect x="13" y="7" width="2" height="2"/>
+      <rect x="3" y="3" width="2" height="2"/><rect x="11" y="3" width="2" height="2"/><rect x="3" y="11" width="2" height="2"/><rect x="11" y="11" width="2" height="2"/>
+      <path d="M5 4h6v1h1v6h-1v1H5v-1H4V5h1zM7 6v1H6v2h1v1h2V9h1V7H9V6z"/>
+    </svg>
+  </button>
+  </div>
+  <div class="settings hidden" id="settings" role="dialog" aria-label="Settings">
+    <div class="settings-title">Settings</div>
+    <div class="settings-group" role="radiogroup" aria-label="Font">
+      <div class="label">Font</div>
+      <label class="font-opt"><input type="radio" name="font" value="default"><span><b>Default</b><small class="fp-default">Space Mono + Newsreader</small></span></label>
+      <label class="font-opt"><input type="radio" name="font" value="dyslexic"><span><b>Dyslexia friendly</b><small class="fp-dyslexic">OpenDyslexic everywhere</small></span></label>
+    </div>
+  </div>
 </header>
 
 <main id="app">
